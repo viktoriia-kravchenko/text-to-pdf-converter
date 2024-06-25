@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { FC } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
-import './PDFViewer.css';
+import './PDFViewer.scss';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -11,65 +11,16 @@ interface PDFViewerProps {
   pdfData: string;
 }
 
-const PDFViewer = ({ pdfData }: PDFViewerProps) => {
-  const [maxNumPages, setMaxNumPages] = useState(1);
-  const [pageNumber, setPageNumber] = useState(1);
+export const PDFViewer: FC<PDFViewerProps> = ({ pdfData }) => (
+  <section className="container">
+    <h2 className="header">Your converted PDF</h2>
 
-  type SuccessProps = {
-    numPages: number;
-  };
-
-  const onDocumentLoadSuccess = ({ numPages }: SuccessProps) => {
-    setMaxNumPages(numPages);
-    setPageNumber(1);
-  };
-
-  const changePage = (offset: number) => {
-    setPageNumber(prevPageNumber => prevPageNumber + offset);
-  };
-
-  const previousPage = () => {
-    changePage(-1);
-  };
-
-  const nextPage = () => {
-    changePage(1);
-  };
-
-  return (
-    <div className="Example__container">
-      <div className="Example__container__document">
-        <Document
-          file={pdfData}
-          className=""
-          onLoadSuccess={onDocumentLoadSuccess}
-        >
-          <Page pageNumber={pageNumber} />
+    <div className="wrapper">
+      <div className="document">
+        <Document file={pdfData}>
+          <Page pageNumber={1} />
         </Document>
-
-        <div>
-          <p>
-            Page {pageNumber || (maxNumPages ? 1 : '--')} of{' '}
-            {maxNumPages || '--'}
-          </p>
-          <button
-            type="button"
-            disabled={pageNumber <= 1}
-            onClick={previousPage}
-          >
-            Previous
-          </button>
-          <button
-            type="button"
-            disabled={pageNumber >= maxNumPages}
-            onClick={nextPage}
-          >
-            Next
-          </button>
-        </div>
       </div>
     </div>
-  );
-};
-
-export default PDFViewer;
+  </section>
+);

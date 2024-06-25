@@ -1,49 +1,21 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from 'react';
-import PDFViewer from './components/PDFViewer/PDFViewer';
-import { convertToPDF } from './helpers/helpers';
+import { FC, useState } from 'react';
+import { UserInputBlock } from './components/UserInputBlock/UserInputBlock';
+import { HistoryBlock } from './components/HistoryBlock/HistoryBlock';
+import { PDFViewer } from './components/PDFViewer/PDFViewer';
 
-export const App: React.FC = () => {
-  const [input, setInput] = useState('');
+export const App: FC = () => {
   const [pdfData, setPdfData] = useState<string>('');
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-
-    if (input) {
-      convertToPDF(input).then((pdfURL: string) => setPdfData(pdfURL));
-    }
-  };
-
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const handleChange = ({ target }: ChangeEvent<HTMLTextAreaElement>) => {
-    setInput(target.value);
-  };
-
   return (
-    <div className="app">
-      <h1 className="title">Text to PDF converter</h1>
-      <p className="description">
-        Enter the text you would like to convert to PDF
-      </p>
+    <div className="p-14">
+      <div className="flex flex-col items-center">
+        <h1 className="font-bold text-3xl mb-8">Text to PDF Converter</h1>
 
-      <div className="input-zone">
-        <form onSubmit={handleSubmit}>
-          <div>
-            <textarea onChange={handleChange} className="" ref={textareaRef} />
+        <UserInputBlock setPdfData={setPdfData} />
 
-            <div className="bottom-container">
-              <button type="submit" disabled={!input.trim()} className="btn">
-                Convert to PDF
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
+        <HistoryBlock setPdfData={setPdfData} />
 
-      <div className="output-zone">
-        <h2>Your converted PDF</h2>
-        <div>{pdfData && <PDFViewer pdfData={pdfData} />}</div>
+        {pdfData && <PDFViewer pdfData={pdfData} />}
       </div>
     </div>
   );

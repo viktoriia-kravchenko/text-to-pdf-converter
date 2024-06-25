@@ -1,0 +1,43 @@
+.container {
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  width: 100%;
+  min-height: 924px;
+
+  .header {
+    font-size: 1.25rem;
+    line-height: 1.75rem; 
+    font-weight: 700; 
+  }
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+  
+    .document {
+      width: 100%;
+      max-width: calc(100% - 2em);
+      margin: 1em 0;
+  
+      .react-pdf__Document {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+  
+      .react-pdf__Page {
+        margin: 1em 0;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+      }
+  
+      .react-pdf__message {
+        padding: 20px;
+        color: white;
+      }
+    }
+  }
+}
